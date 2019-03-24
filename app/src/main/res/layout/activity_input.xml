@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/defaultBackground"
+    tools:context=".activity.InputActivity">
+
+    <EditText
+        android:id="@+id/enter_message"
+        android:layout_width="match_parent"
+        android:layout_height="500sp"
+        android:layout_margin="10sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginBottom="50sp"
+        android:gravity="top|start"
+        android:inputType="textMultiLine|textCapSentences"
+        android:scrollbars="vertical"
+        android:background="@drawable/border"
+        android:padding="10sp"
+        android:focusable="true"
+        android:hint="@string/input_hint"
+        tools:ignore="Autofill" />
+
+    <ImageView
+        android:id="@+id/playButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/round_default"
+        android:contentDescription="@string/app_name" />
+
+    <!--ImageButton
+        android:id="@+id/micButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_background"
+        android:contentDescription="@string/app_name" /-->
+
+    <ImageView
+        android:id="@+id/stopButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/round_active"
+        android:contentDescription="@string/app_name"
+        android:visibility="invisible"
+        />
+
+</RelativeLayout>
