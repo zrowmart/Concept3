@@ -1,22 +1,25 @@
 package com.concept.test.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.concept.test.R;
+import com.concept.test.adapter.PostAdapter;
 import com.concept.test.helper.Messages;
-import com.concept.test.model.BaseDomain;
+import com.concept.test.model.postClass;
 import com.concept.test.rest.RestHandler;
-import com.concept.test.rest.request.PostRequest;
 import com.concept.test.rest.response.PostResponse;
 import com.concept.test.util.ZrowActivity;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -25,10 +28,16 @@ import retrofit2.Response;
 
 public class MainActivity extends ZrowActivity {
 
+    private List<postClass> postClassList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private PostAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
+        recyclerView = findViewById( R.id.recycler_view );
+        mAdapter = new PostAdapter();
         Button bi = findViewById( R.id.inputActivity );
         Button reg = findViewById( R.id.register );
         Button login = findViewById( R.id.login );
@@ -49,7 +58,9 @@ public class MainActivity extends ZrowActivity {
             }
         } );
 
-
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(mAdapter);
 
     }
 
@@ -61,8 +72,8 @@ public class MainActivity extends ZrowActivity {
             public void onResponse(Call<List<PostResponse>> call, Response<List<PostResponse>> response) {
                 if (response.isSuccessful()) {
                     try {
-                        if (response.body().getStatus().equalsIgnoreCase( "success" )) {
-                            Toast.makeText( thisActivity, postResponse.get() + " successfully registerd", Toast.LENGTH_SHORT ).show();
+                        if (response.body().toString().equalsIgnoreCase( "success" )) {
+                            Toast.makeText( thisActivity, postResponse.getStatus() + " successfully registerd", Toast.LENGTH_SHORT ).show();
                             Intent i = new Intent( thisActivity, MainActivity.class );
                             startActivity( i );
                             finish();

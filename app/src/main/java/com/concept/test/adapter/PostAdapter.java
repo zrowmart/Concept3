@@ -11,13 +11,13 @@ import com.concept.test.R;
 
 import java.util.List;
 
-public class postAdapter extends RecyclerView.Adapter<postAdapter.ViewHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     private List<String> values;
 
     @NonNull
     @Override
-    public postAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public PostAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View v =inflater.inflate(R.layout.post_list, viewGroup, false);
         ViewHolder vh = new ViewHolder(v);
@@ -25,7 +25,7 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull postAdapter.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull PostAdapter.ViewHolder viewHolder, int i) {
 
     }
 

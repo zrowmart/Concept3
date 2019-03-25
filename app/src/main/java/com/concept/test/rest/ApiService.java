@@ -29,5 +29,5 @@ public interface ApiService {
 
 
     @GET("post.php")
-    Call<List<PostRequest>> getPostDetail(@Body PostRequest postRequest);
+    Call<List<PostResponse>> getPostDetail(@Body PostResponse postResponse);
 }
