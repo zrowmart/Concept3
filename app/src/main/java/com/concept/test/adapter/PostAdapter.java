@@ -8,12 +8,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.concept.test.R;
+import com.concept.test.model.postClass;
 
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
-    private List<String> values;
+    private List<postClass> values;
+
+    public PostAdapter(List<postClass> values) {
+        this.values = values;
+    }
 
     @NonNull
     @Override

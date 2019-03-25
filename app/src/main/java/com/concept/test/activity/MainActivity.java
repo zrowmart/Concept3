@@ -29,15 +29,13 @@ import retrofit2.Response;
 public class MainActivity extends ZrowActivity {
 
     private List<postClass> postClassList = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private PostAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
-        recyclerView = findViewById( R.id.recycler_view );
-        mAdapter = new PostAdapter();
+        RecyclerView recyclerView = findViewById( R.id.recycler_view );
+        PostAdapter mAdapter = new PostAdapter(postClassList);
         Button bi = findViewById( R.id.inputActivity );
         Button reg = findViewById( R.id.register );
         Button login = findViewById( R.id.login );
@@ -57,10 +55,9 @@ public class MainActivity extends ZrowActivity {
                 startActivity( i );
             }
         } );
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter( mAdapter );
 
     }
 
