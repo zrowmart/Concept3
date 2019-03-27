@@ -1,11 +1,17 @@
 package com.concept.test.activity;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -38,7 +44,7 @@ public class MainActivity extends ZrowActivity {
         PostAdapter mAdapter = new PostAdapter(postClassList);
         Button bi = findViewById( R.id.inputActivity );
         Button reg = findViewById( R.id.register );
-        Button login = findViewById( R.id.login );
+        //Button login = findViewById( R.id.login );
         bi.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,5 +118,23 @@ public class MainActivity extends ZrowActivity {
             }
         } );
 
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService( Context.SEARCH_SERVICE);
+
+        SearchView searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
+        }
+        return super.onCreateOptionsMenu(menu);
     }
 }

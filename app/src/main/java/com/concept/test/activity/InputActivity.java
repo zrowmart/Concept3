@@ -239,24 +239,24 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate( R.menu.menu, menu );
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.send:
-                //add the function to perform here
-                sendPost();
-                return (true);
-
-        }
-        return (super.onOptionsItemSelected( item ));
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate( R.menu.menu, menu );
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.send:
+//                //add the function to perform here
+//                sendPost();
+//                return (true);
+//
+//        }
+//        return (super.onOptionsItemSelected( item ));
+//    }
 
     private void sendPost() {
 
