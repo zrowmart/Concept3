@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.concept.test.R;
-import com.concept.test.model.postClass;
+import com.concept.test.model.PostClass;
 
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
-    private List<postClass> values;
+    private List<PostClass> postList;
 
-    public PostAdapter(List<postClass> values) {
-        this.values = values;
+    public PostAdapter(List<PostClass> values) {
+        this.postList = values;
     }
 
     @NonNull
@@ -31,19 +31,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull PostAdapter.ViewHolder viewHolder, int i) {
-
+            PostClass postClass = postList.get(i);
+            viewHolder.textTitle.setText( postClass.getPost_title() );
+            viewHolder.textDetail.setText( postClass.getPost_Detail() );
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return postList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textTitle;
-        public TextView textDetail;
-        public View layout;
-        public ViewHolder(@NonNull View itemView) {
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView textTitle;
+        TextView textDetail;
+        View layout;
+        ViewHolder(@NonNull View itemView) {
             super( itemView );
             layout = itemView;
             textDetail = itemView.findViewById( R.id.post_detail );

@@ -1,15 +1,15 @@
 package com.concept.test.model;
 
-public class postClass {
+public class PostClass {
 
     private String post_title;
     private String post_Detail;
     private String post_category;
-    public postClass(){
+    public PostClass(){
 
     }
 
-    public postClass(String post_title, String post_Detail, String post_category) {
+    public PostClass(String post_title, String post_Detail, String post_category) {
         this.post_title = post_title;
         this.post_Detail = post_Detail;
         this.post_category = post_category;

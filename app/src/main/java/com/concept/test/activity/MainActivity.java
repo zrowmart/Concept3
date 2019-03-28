@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.concept.test.R;
 import com.concept.test.adapter.PostAdapter;
 import com.concept.test.helper.Messages;
-import com.concept.test.model.postClass;
+import com.concept.test.model.PostClass;
 import com.concept.test.rest.RestHandler;
 import com.concept.test.rest.response.PostResponse;
 import com.concept.test.util.ZrowActivity;
@@ -34,14 +34,16 @@ import retrofit2.Response;
 
 public class MainActivity extends ZrowActivity {
 
-    private List<postClass> postClassList = new ArrayList<>();
+    private List<PostClass> postClassList = new ArrayList<>();
+    private PostAdapter postAdapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
-        RecyclerView recyclerView = findViewById( R.id.recycler_view );
-        PostAdapter mAdapter = new PostAdapter(postClassList);
+        recyclerView =  findViewById( R.id.recycler_view );
+        postAdapter = new PostAdapter(postClassList);
         Button bi = findViewById( R.id.inputActivity );
         Button reg = findViewById( R.id.register );
         //Button login = findViewById( R.id.login );
@@ -63,8 +65,8 @@ public class MainActivity extends ZrowActivity {
         } );
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter( mAdapter );
-
+        recyclerView.setAdapter( postAdapter );
+        prepareMovieData();
     }
 
     private void fetchPost(final PostResponse postResponse){
@@ -136,5 +138,23 @@ public class MainActivity extends ZrowActivity {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
         }
         return super.onCreateOptionsMenu(menu);
+    }
+
+
+    private void prepareMovieData() {
+        PostClass postClass = new PostClass("Ankit Shukla", "Do nothing only sleeps, put phone silent mode 1000 missed call in a year ", "2015");
+        postClassList.add(postClass);
+
+        postClass = new PostClass("Abhishek Gupta", "Out of 1000 missed call, 800 call I made to ankit", "2015");
+        postClassList.add(postClass);
+
+        postClass = new PostClass("Israt ", "Android Developer, know Node.js as well.", "2015");
+        postClassList.add(postClass);
+
+        postClass = new PostClass("Kuch bhi", "Kuch bhi likh diya kyuki static data chahiye tha na", "2015");
+        postClassList.add(postClass);
+
+
+        postAdapter.notifyDataSetChanged();
     }
 }

@@ -6,20 +6,8 @@
     android:background="@color/white"
     tools:context=".activity.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/topLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <SearchView
-            android:id="@+id/searchPost"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:autofillHints="Search"
-            />
-
         <LinearLayout
+            android:id="@+id/topLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -45,7 +33,6 @@
                 android:text="Login" />
         </LinearLayout>
 
-    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:layout_below="@+id/topLayout"
         android:id="@+id/recycler_view"
