@@ -4,32 +4,52 @@ import com.concept.test.model.BaseDomain;
 
 public class PostResponse extends BaseDomain {
 
-    String postDetail,postTitle;
 
-    public PostResponse() {
+    //String postDetail,postTitle;
+    String category ,postId,title,post;
+
+    public String getCategory() {
+        return category;
     }
 
-    public String getPostDetail() {
-        return postDetail;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public void setPostDetail(String postDetail) {
-        this.postDetail = postDetail;
+    public String getPostId() {
+        return postId;
     }
 
-    public String getPostTitle() {
-        return postTitle;
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
-    public void setPostTitle(String postTitle) {
-        this.postTitle = postTitle;
+    public String getTitle() {
+        return title;
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getPost() {
+        return post;
+    }
+
+    public void setPost(String post) {
+        this.post = post;
+    }
+
+
 
     @Override
     public String toString() {
-        return "UserResponse{" +
-                "posttitle='" + postTitle + '\'' +
-                ", postdetail='" + postDetail + '\'' +
+        return "PostResponse{" +
+                "category='" + category + '\'' +
+                ", postId='" + postId + '\'' +
+                ", title='" + title + '\'' +
+                ", post='" + post + '\'' +
+
                 '}';
     }
 }

@@ -26,8 +26,6 @@ public interface ApiService {
     @POST("login.php")
     Call<SettingResponse> hitSetting(@Body SettingRequest settingRequest);
 
-
-
-    @GET("post.php")
-    Call<List<PostResponse>> getPostDetail(@Body PostResponse postResponse);
+    @GET("showPost.php")
+    Call<List<PostResponse>> getPostDetail();
 }

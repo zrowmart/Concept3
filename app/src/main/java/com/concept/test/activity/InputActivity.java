@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.concept.test.R;
+import com.concept.test.helper.DbHelper;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -37,6 +38,7 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
     ImageView start, stop;
     DroidSpeech droidSpeech;
     String finalMsg = " ";
+    DbHelper dbHelper;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -47,6 +49,7 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
         enterMsg = findViewById( R.id.enter_message );
         start = findViewById( R.id.playButton );
         stop = findViewById( R.id.stopButton );
+        dbHelper = new DbHelper(this);
         start.setOnClickListener( this );
         stop.setOnClickListener( this );
         //micButton = findViewById( R.id.micButton );
@@ -125,10 +128,8 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.playButton:
-
                 // Starting droid speech
                 droidSpeech.startDroidSpeechRecognition();
-
                 // Setting the view visibilities when droid speech is running
                 start.setVisibility( View.GONE );
                 stop.setVisibility( View.VISIBLE );
@@ -136,13 +137,10 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.stopButton:
-
                 // Closing droid speech
                 droidSpeech.closeDroidSpeechOperations();
-
                 stop.setVisibility( View.GONE );
                 start.setVisibility( View.VISIBLE );
-
                 break;
         }
     }
@@ -174,11 +172,9 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
         // Setting the final speech result
         finalMsg += " " + finalSpeechResult;
         this.enterMsg.setText( finalMsg );
-
         if (droidSpeech.getContinuousSpeechRecognition()) {
             int[] colorPallets1 = new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.MAGENTA};
             int[] colorPallets2 = new int[]{Color.YELLOW, Color.RED, Color.CYAN, Color.BLUE, Color.GREEN};
-
             // Setting random color pallets to the recognition progress view
             droidSpeech.setRecognitionProgressViewColors( new Random().nextInt( 2 ) == 0 ? colorPallets1 : colorPallets2 );
         } else {
@@ -239,26 +235,50 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate( R.menu.menu, menu );
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.send:
-//                //add the function to perform here
-//                sendPost();
-//                return (true);
-//
-//        }
-//        return (super.onOptionsItemSelected( item ));
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate( R.menu.send, menu );
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_send:
+                //add the function to perform here
+                sendPost();
+                return (true);
+            case R.id.list_data:
+                Intent in = new Intent( this,ListDataActivity.class );
+                startActivity( in );
+                return (true);
+        }
+        return (super.onOptionsItemSelected( item ));
+    }
 
     private void sendPost() {
-
+        String added = finalMsg;
+        if(enterMsg.length() != 0){
+            addData( added,"nothing" );
+        }else{
+            toastMsg( "Write something" );
+        }
     }
+
+    public void addData(String item1, String item2) {
+        boolean insertdata = dbHelper.addData( item1, item2 );
+
+        if (insertdata) {
+            toastMsg( "Data Added" );
+        } else {
+            toastMsg( "Something went wrong" );
+        }
+    }
+
+
+    private void toastMsg(String msg) {
+        Toast.makeText( this, msg, Toast.LENGTH_LONG ).show();
+    }
+
 }
