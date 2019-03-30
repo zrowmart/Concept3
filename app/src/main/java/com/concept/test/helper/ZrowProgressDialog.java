@@ -3,6 +3,8 @@ package com.concept.test.helper;
 import android.app.Activity;
 import android.app.ProgressDialog;
 
+import com.concept.test.R;
+
 public class ZrowProgressDialog {
     Activity activity;
     ProgressDialog progressDialog;
@@ -34,6 +36,7 @@ public class ZrowProgressDialog {
 
     public void setTitle(String title) {
         if (progressDialog != null) {
+            title = String.valueOf( R.string.app_name );
             progressDialog.setTitle( title );
         }
     }

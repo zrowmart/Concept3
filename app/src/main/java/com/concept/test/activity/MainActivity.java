@@ -13,12 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.concept.test.R;
 import com.concept.test.adapter.PostAdapter;
 import com.concept.test.helper.Messages;
-import com.concept.test.model.PostClass;
 import com.concept.test.rest.RestHandler;
 import com.concept.test.rest.response.PostResponse;
 import com.concept.test.util.ZrowActivity;
@@ -69,7 +67,8 @@ public class MainActivity extends ZrowActivity {
 
     private void fetchPost(){
         final Call<List<PostResponse>> call = RestHandler.getApiService().getPostDetail();
-
+//        progressDialog.setMessage(Messages.FETCHING_POST);
+//        progressDialog.show();
         call.enqueue( new Callback<List<PostResponse>>() {
             @Override
             public void onResponse(Call<List<PostResponse>> call, Response<List<PostResponse>> response) {
@@ -80,7 +79,7 @@ public class MainActivity extends ZrowActivity {
                         postAdapter = new PostAdapter( postList,R.layout.post_list,getApplicationContext() );
                         recyclerView.setAdapter( postAdapter );
                         Log.d( "list size is",listLength+"" );
-//                        }
+                        progressDialog.dismiss();
                     } catch (Exception err) {
                         err.printStackTrace();
                     }

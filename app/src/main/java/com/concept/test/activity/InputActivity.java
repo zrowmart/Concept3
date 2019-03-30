@@ -261,14 +261,14 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
         String added = finalMsg;
         if(enterMsg.length() != 0){
             addData( added,"nothing" );
+            enterMsg.getText().clear();
         }else{
             toastMsg( "Write something" );
         }
     }
 
     public void addData(String item1, String item2) {
-        boolean insertdata = dbHelper.addData( item1, item2 );
-
+        boolean insertdata = dbHelper.addData( finalMsg, "Ankit" );
         if (insertdata) {
             toastMsg( "Data Added" );
         } else {

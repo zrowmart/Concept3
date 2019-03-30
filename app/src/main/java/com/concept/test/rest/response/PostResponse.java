@@ -41,7 +41,6 @@ public class PostResponse extends BaseDomain {
     }
 
 
-
     @Override
     public String toString() {
         return "PostResponse{" +

@@ -17,6 +17,8 @@ public class Messages {
     public static final String PASSWORD_NOT_CHANGE = "Password is not change";
     public static final String MOBILE_NOT_CHANGE = "Mobile Number is not change";
 
+    public static final String FETCHING_POST = "Fetching Post";
+
 
     public static final String PROBLEM_CONNECT_SERVER = "Problem to connecting with server";
 
