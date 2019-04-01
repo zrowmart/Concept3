@@ -30,5 +30,5 @@ public interface ApiService {
     Call<List<PostResponse>> getPostDetail();
 
     @POST("addPost.php")
-    Call<PostResponse> addPost(@Body PostRequest postRequest);
+    Call<PostResponse> insertUserPost(@Body PostRequest postRequest);
 }

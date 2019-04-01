@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.concept.test.R;
 import com.concept.test.helper.Messages;
 import com.concept.test.model.BaseDomain;
+import com.concept.test.model.UserData;
 import com.concept.test.rest.RestHandler;
 import com.concept.test.rest.request.UserRequest;
 import com.concept.test.util.ZrowActivity;
@@ -53,6 +54,7 @@ public class RegisterActivity extends ZrowActivity {
     TextView tc;
     String stringGender = "";
     AutoCompleteTextView act;
+    String unique;
 
 
     @Override
@@ -61,6 +63,12 @@ public class RegisterActivity extends ZrowActivity {
         setContentView( R.layout.activity_register );
         thisActivity = RegisterActivity.this;
         init();
+        if (userLocalStore.isLoggedIn()) {
+            Intent intent = new Intent(thisActivity, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         age = findViewById( R.id.ageEditor );
         username = findViewById( R.id.input_username );
         email = findViewById( R.id.input_email );
@@ -114,7 +122,7 @@ public class RegisterActivity extends ZrowActivity {
 
         int maxAge = 61, minAge = 17;
         int iAge = Integer.parseInt( fage );
-        String unique = GenerateRandomString.randomString( 10 );
+        unique = GenerateRandomString.randomString( 10 );
 
         if (TextUtils.isEmpty( fpassword )) {
             password.setError( "Please enter Phone number" );
@@ -154,6 +162,10 @@ public class RegisterActivity extends ZrowActivity {
                     try {
                         if (response.body().getStatus().equalsIgnoreCase( "success" )) {
                             progressDialog.dismiss();
+                            UserData userData = new UserData();
+                            userData.setAutoId( unique );
+                            userLocalStore.storeUserData( userData );
+                            userLocalStore.setLoggedIn( true );
                             Toast.makeText( thisActivity, userRequest.getEmail() + " successfully registerd", Toast.LENGTH_SHORT ).show();
                             Intent i = new Intent( thisActivity, MainActivity.class );
                             startActivity( i );

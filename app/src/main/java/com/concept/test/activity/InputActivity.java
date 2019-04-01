@@ -18,6 +18,14 @@ import android.widget.Toast;
 
 import com.concept.test.R;
 import com.concept.test.helper.DbHelper;
+import com.concept.test.helper.Messages;
+import com.concept.test.rest.RestHandler;
+import com.concept.test.rest.request.PostRequest;
+import com.concept.test.rest.request.SettingRequest;
+import com.concept.test.rest.response.PostResponse;
+import com.concept.test.rest.response.SettingResponse;
+import com.concept.test.util.UserLocalStore;
+import com.concept.test.util.ZrowActivity;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -29,22 +37,30 @@ import com.vikramezhil.droidspeech.DroidSpeech;
 import com.vikramezhil.droidspeech.OnDSListener;
 import com.vikramezhil.droidspeech.OnDSPermissionsListener;
 
+import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Random;
 
-public class InputActivity extends AppCompatActivity implements View.OnClickListener, OnDSListener, OnDSPermissionsListener {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class InputActivity extends ZrowActivity implements View.OnClickListener, OnDSListener, OnDSPermissionsListener {
 
     EditText enterMsg;
     ImageView start, stop;
     DroidSpeech droidSpeech;
     String finalMsg = " ";
     DbHelper dbHelper;
+    String autoId;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_input );
+        thisActivity = InputActivity.this;
+        init();
         checkPermission();
         enterMsg = findViewById( R.id.enter_message );
         start = findViewById( R.id.playButton );
@@ -61,6 +77,8 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
         droidSpeech.setRecognitionProgressMsgColor( Color.WHITE );
         droidSpeech.setOneStepVerifyConfirmTextColor( Color.WHITE );
         droidSpeech.setOneStepVerifyRetryTextColor( Color.WHITE );
+        autoId = userLocalStore.fetchUserData().getAutoId();
+
 
     }
 
@@ -261,6 +279,12 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
         String added = finalMsg;
         if(enterMsg.length() != 0){
             addData( added,"nothing" );
+            //insert in userPost table on server
+            PostRequest postRequest = new PostRequest();
+            postRequest.setAutoId( autoId );
+            //postRequest.setPost( "post test " );
+            postRequest.setPost( added );
+            insertUserPost(postRequest);
             enterMsg.getText().clear();
         }else{
             toastMsg( "Write something" );
@@ -279,6 +303,64 @@ public class InputActivity extends AppCompatActivity implements View.OnClickList
 
     private void toastMsg(String msg) {
         Toast.makeText( this, msg, Toast.LENGTH_LONG ).show();
+    }
+
+    private void insertUserPost(PostRequest postRequest){
+        final Call<PostResponse> call = RestHandler.getApiService().insertUserPost(postRequest);
+        progressDialog.setMessage( Messages.AUTHENTICATE_USER_PD_MSG);
+        progressDialog.show();
+        call.enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        if (response.body().getStatus().equalsIgnoreCase("success")) {
+                            progressDialog.dismiss();
+                            Intent i = new Intent(thisActivity, MainActivity.class);
+                            startActivity(i);
+                        } else {
+                            progressDialog.dismiss();
+                            String msg = response.body().getMsg();
+                            //messageHelper.shortMessage(Messages.WRONG_VALUE);
+                            messageHelper.shortMessage(msg);
+                        }
+                    } catch (Exception err) {
+                        err.printStackTrace();
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
+                    }
+                } else {
+                    if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
+                        progressDialog.dismiss();
+                        //messageHelper.shortMessage(Messages.WRONG_VALUE);
+                        messageHelper.shortMessage(Messages.NO_INTERNET_CONNECTIVITY);
+
+                    } else {
+                        try {
+                            messageHelper.shortMessage(Messages.PROBLEM_CONNECT_SERVER);
+                            Log.e("--> onResponse", "error -> " + response.errorBody().string());
+                        } catch (Exception err) {
+                            Log.e("--> Exception", err.getStackTrace().toString());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
+                try {
+                    progressDialog.dismiss();
+                    if (t != null) {
+                        messageHelper.shortMessage(Messages.PROBLEM_CONNECT_SERVER);
+                        if (t instanceof Exception) {
+                            t.printStackTrace();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 }

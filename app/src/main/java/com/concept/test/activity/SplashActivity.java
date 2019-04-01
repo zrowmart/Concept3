@@ -21,12 +21,11 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
         ImageView logo = findViewById( R.id.imgLogo );
 
-
         new Handler().postDelayed( new Runnable() {
 
             @Override
             public void run() {
-                Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                Intent i = new Intent(SplashActivity.this, RegisterActivity.class);
                 startActivity(i);
                 finish();
             }

@@ -8,8 +8,9 @@ import com.concept.test.model.UserData;
 public class UserLocalStore {
     public static final String user_pref = "userdetails";
     SharedPreferences userLocalDatabase;
-    public static final String username = "username";
+    public static final String email = "email";
     public static final String password = "password";
+    public static final String autoId = "autoId";
     public static final String isLoggedIn = "isLoggedIn";
     Context context;
 
@@ -20,14 +21,15 @@ public class UserLocalStore {
 
     public void storeUserData(UserData userData) {
         SharedPreferences.Editor peditor = userLocalDatabase.edit();
-        peditor.putString(username, userData.getUsername());
+        peditor.putString(email, userData.getEmail());
         peditor.putString(password, userData.getPassword());
+        peditor.putString( autoId,userData.getAutoId() );
         peditor.commit();
     }
 
     public void resetUserData() {
         SharedPreferences.Editor peditor = userLocalDatabase.edit();
-        peditor.putString(username, "");
+        peditor.putString(email, "");
         peditor.putString(password, "");
         peditor.putBoolean(isLoggedIn, false);
         peditor.commit();
@@ -35,8 +37,9 @@ public class UserLocalStore {
 
     public UserData fetchUserData() {
         UserData userData = new UserData();
-        userData.setUsername(userLocalDatabase.getString(username, ""));
+        userData.setEmail(userLocalDatabase.getString(email, ""));
         userData.setPassword(userLocalDatabase.getString(password, ""));
+        userData.setAutoId( userLocalDatabase.getString( autoId,"" ) );
         return userData;
     }
 

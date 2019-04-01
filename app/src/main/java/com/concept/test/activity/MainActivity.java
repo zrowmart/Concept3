@@ -40,6 +40,8 @@ public class MainActivity extends ZrowActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
+        thisActivity = MainActivity.this;
+        init();
         recyclerView =  findViewById( R.id.recycler_view );
         postAdapter = new PostAdapter( postList,R.layout.post_list,getApplicationContext() );
         Button bi = findViewById( R.id.inputActivity );
@@ -79,7 +81,7 @@ public class MainActivity extends ZrowActivity {
                         postAdapter = new PostAdapter( postList,R.layout.post_list,getApplicationContext() );
                         recyclerView.setAdapter( postAdapter );
                         Log.d( "list size is",listLength+"" );
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
                     } catch (Exception err) {
                         err.printStackTrace();
                     }

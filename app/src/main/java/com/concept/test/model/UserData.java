@@ -1,13 +1,14 @@
 package com.concept.test.model;
 
 public class UserData {
-    String username,password;
-    public String getUsername() {
-        return username;
+    String email,password, autoId;
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -18,12 +19,20 @@ public class UserData {
         this.password = password;
     }
 
+    public String getAutoId() {
+        return autoId;
+    }
+
+    public void setAutoId(String autoId) {
+        this.autoId = autoId;
+    }
+
     @Override
     public String toString() {
         return "UserData{" +
-                "name='" + username + '\'' +
+                "email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", autoId='" + autoId + '\'' +
                 '}';
     }
-
 }
