@@ -21,4 +21,8 @@
     <string name="cityState">Enter City Name</string>
 
     <string name="search_hint">Search Story</string>
+
+    <string name="all">All</string>
+    <string name="favourite">Favourite</string>
+    <string name="mypost">My Post</string>
 </resources>

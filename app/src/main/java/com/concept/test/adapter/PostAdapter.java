@@ -24,8 +24,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         this.context = context;
         this.rowLayout=rowLayout;
         this.postList = values;
-
-
     }
 
     @NonNull

@@ -22,7 +22,6 @@
                 android:id="@+id/post_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="This is title"
                 android:textSize="20sp"
                 android:textStyle="bold" />
             <View
@@ -33,7 +32,6 @@
                 android:id="@+id/post_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="This is description area."
                 android:textSize="16sp" />
 
         </LinearLayout>

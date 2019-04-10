@@ -56,7 +56,6 @@ public class RegisterActivity extends ZrowActivity {
     AutoCompleteTextView act;
     String unique;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -68,7 +67,6 @@ public class RegisterActivity extends ZrowActivity {
             startActivity(intent);
             finish();
         }
-
         age = findViewById( R.id.ageEditor );
         username = findViewById( R.id.input_username );
         email = findViewById( R.id.input_email );
@@ -96,7 +94,6 @@ public class RegisterActivity extends ZrowActivity {
                 }
             }
         } );
-
         register.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,9 +104,7 @@ public class RegisterActivity extends ZrowActivity {
                 }
             }
         } );
-
         callAll();
-
     }
 
     private void registerUser() {

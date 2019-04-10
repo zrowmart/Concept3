@@ -15,15 +15,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.ListDataActivity"></activity>
+        <activity android:name=".activity.MyPostActivity"></activity>
+        <activity android:name=".activity.ListDataActivity" />
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.InputActivity">
-
-        </activity>
-
-
+        <activity android:name=".activity.InputActivity"></activity>
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

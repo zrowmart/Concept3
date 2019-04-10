@@ -6,45 +6,76 @@
     android:background="#F3E2AE"
     tools:context=".activity.MainActivity">
 
-        <LinearLayout
-            android:id="@+id/topLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/inputActivity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Write Something" />
-
-            <Button
-                android:id="@+id/register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/inputActivity"
-                android:text="@string/register" />
-
-
-            <Button
-                android:id="@+id/login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/register"
-                android:text="Login" />
-
-        </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_below="@+id/topLayout"
-        android:id="@+id/recycler_view"
-        android:scrollbars="vertical"
+    <RadioGroup
+        android:id="@+id/filter_post"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <RadioButton
+            android:id="@+id/all"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/all" />
+
+        <RadioButton
+            android:id="@+id/favourite"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/favourite" />
+
+        <RadioButton
+            android:id="@+id/mypost"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/mypost" />
+    </RadioGroup>
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/filter_post"
+
+        />
+
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/categories"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_record"
+        android:layout_margin="26dp" />
+
+
 
 </RelativeLayout>

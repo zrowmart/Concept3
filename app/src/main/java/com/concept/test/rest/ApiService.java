@@ -3,6 +3,7 @@ package com.concept.test.rest;
 import com.concept.test.model.BaseDomain;
 import com.concept.test.rest.request.PostRequest;
 import com.concept.test.rest.request.SettingRequest;
+import com.concept.test.rest.request.ShowMyPost;
 import com.concept.test.rest.request.UserRequest;
 import com.concept.test.rest.response.PostResponse;
 import com.concept.test.rest.response.SettingResponse;
@@ -31,4 +32,10 @@ public interface ApiService {
 
     @POST("addPost.php")
     Call<PostResponse> insertUserPost(@Body PostRequest postRequest);
+
+    @POST("showMyPost.php")
+    Call<ShowMyPost> showMyPost(@Body ShowMyPost showMyPost);
+//
+//    @GET
+//    Call<> fetchCategory();
 }
