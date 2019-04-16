@@ -160,6 +160,12 @@
             android:layout_marginBottom="24dp"
             android:padding="12dp"
             android:text="@string/register" />
-
+        <Button
+            android:id="@+id/login"
+            android:text="Login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
+
+
 </ScrollView>

@@ -2,6 +2,7 @@ package com.concept.test.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -86,18 +87,18 @@ public class InputActivity extends ZrowActivity{
                 getSpeechInput( v );
             }
         } );
-
-
         autoId = userLocalStore.fetchUserData().getAutoId();
-
-
     }
 
     public void getSpeechInput(View view){
+
+
         Intent intent = new Intent( RecognizerIntent.ACTION_RECOGNIZE_SPEECH );
         intent.putExtra( RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM );
         intent.putExtra( RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS,500000 );
         intent.putExtra( RecognizerIntent.EXTRA_LANGUAGE, "hi-IN" );
+        intent.putExtra( RecognizerIntent.EXTRA_PREFER_OFFLINE, "hi-IN" );
+        intent.putExtra( RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, "hi-IN" );
         intent.putExtra( RecognizerIntent.EXTRA_PROMPT, "बोलना शुरू करें" );
         if(intent.resolveActivity( getPackageManager() )!= null){
             startActivityForResult( intent,10 );
@@ -107,10 +108,11 @@ public class InputActivity extends ZrowActivity{
     }
 
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode,Intent data){
         super.onActivityResult( requestCode,resultCode,data );
-
         switch (requestCode){
             case 10:
                 if(resultCode == RESULT_OK && data != null){
@@ -183,14 +185,14 @@ public class InputActivity extends ZrowActivity{
     }
 
     private void sendPost() {
-        String added = finalMsg;
+        Log.d("bca",finalMsg);
         if(enterMsg.getText().toString().trim().length() != 0){
-//            addData( added,"nothing" );
-            PostRequest postRequest = new PostRequest();
-            postRequest.setAutoId( autoId );
-            //postRequest.setPost( "post test " );
-            postRequest.setPost( added );
-            insertUserPost(postRequest);
+            addData( finalMsg,"nothing" );
+//            PostRequest postRequest = new PostRequest();
+//            postRequest.setAutoId( autoId );
+//            //postRequest.setPost( "post test " );
+//            postRequest.setPost( added );
+//            insertUserPost(postRequest);
             enterMsg.getText().clear();
             finish();
         }else{
@@ -199,7 +201,7 @@ public class InputActivity extends ZrowActivity{
     }
 
     public void addData(String item1, String item2) {
-        boolean insertdata = dbHelper.addData( finalMsg, "Ankit" );
+        boolean insertdata = dbHelper.addData( item1, item2 );
         if (insertdata) {
             toastMsg( "Your post submitted, will publish after verifying after title" );
         } else {

@@ -67,6 +67,15 @@ public class RegisterActivity extends ZrowActivity {
             startActivity(intent);
             finish();
         }
+
+        Button login = findViewById( R.id.login );
+        login.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent LoginIntent = new Intent( thisActivity,LoginActivity.class);
+                startActivity( LoginIntent );
+            }
+        } );
         age = findViewById( R.id.ageEditor );
         username = findViewById( R.id.input_username );
         email = findViewById( R.id.input_email );

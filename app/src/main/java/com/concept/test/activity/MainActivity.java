@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.concept.test.R;
 import com.concept.test.adapter.PostAdapter;
@@ -24,8 +25,11 @@ import com.concept.test.rest.RestHandler;
 import com.concept.test.rest.response.PostResponse;
 import com.concept.test.util.ZrowActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -60,11 +64,13 @@ public class MainActivity extends ZrowActivity {
                         // do operations specific to this selection
                         fetchPost();
                         break;
-                    case R.id.myPost:
+                    case R.id.mypost:
                         // do operations specific to this selection
+                        Toast.makeText( thisActivity, "Wow!!!", Toast.LENGTH_SHORT ).show();
                         break;
                     case R.id.favourite:
                         // do operations specific to this selectio
+                        Toast.makeText( thisActivity, "Now!!!", Toast.LENGTH_SHORT ).show();
                         break;
                 }
             }
@@ -98,10 +104,10 @@ public class MainActivity extends ZrowActivity {
         progressDialog.show();
         call.enqueue( new Callback<List<PostResponse>>() {
             @Override
-            public void onResponse(Call<List<PostResponse>> call, Response<List<PostResponse>> response) {
+            public void onResponse(@NotNull Call<List<PostResponse>> call, @NotNull Response<List<PostResponse>> response) {
                 if (response.isSuccessful()) {
                     try {
-                        long listLength = response.body().size();
+//                        long listLength = response.body().size();
                         List<PostResponse> postList = response.body();
                         postAdapter = new PostAdapter( postList, R.layout.post_list, getApplicationContext() );
                         recyclerView.setAdapter( postAdapter );
@@ -121,16 +127,18 @@ public class MainActivity extends ZrowActivity {
                     } else {
                         try {
                             messageHelper.shortMessage( Messages.PROBLEM_CONNECT_SERVER );
-                            Log.e( "--> onResponse", "error -> " + response.errorBody().string() );
+                            if (response.errorBody() != null) {
+                                Log.e( "--> onResponse", "error -> " + response.errorBody().string() );
+                            }
                         } catch (Exception err) {
-                            Log.e( "--> Exception", err.getStackTrace().toString() );
+                            Log.e( "--> Exception", Arrays.toString( err.getStackTrace() ) );
                         }
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<PostResponse>> call, Throwable t) {
+            public void onFailure(@NotNull Call<List<PostResponse>> call, @NotNull Throwable t) {
                 try {
                     progressDialog.dismiss();
                     messageHelper.shortMessage( Messages.PROBLEM_CONNECT_SERVER );
@@ -161,7 +169,9 @@ public class MainActivity extends ZrowActivity {
                     searchView = (SearchView) searchItem.getActionView();
                 }
                 if (searchView != null) {
-                    searchView.setSearchableInfo( searchManager.getSearchableInfo( MainActivity.this.getComponentName() ) );
+                    if (searchManager != null) {
+                        searchView.setSearchableInfo( searchManager.getSearchableInfo( MainActivity.this.getComponentName() ) );
+                    }
                 }
                 return (true);
             case R.id.myPost:
