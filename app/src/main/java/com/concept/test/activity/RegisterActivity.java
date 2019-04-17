@@ -26,6 +26,7 @@ import com.concept.test.rest.RestHandler;
 import com.concept.test.rest.request.UserRequest;
 import com.concept.test.util.ZrowActivity;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -126,7 +128,7 @@ public class RegisterActivity extends ZrowActivity {
 
         int maxAge = 61, minAge = 17;
         int iAge = Integer.parseInt( fage );
-        unique = GenerateRandomString.randomString( 10 );
+        unique = GenerateRandomString.randomString();
 
         if (TextUtils.isEmpty( fpassword )) {
             password.setError( "Please enter Phone number" );
@@ -161,26 +163,28 @@ public class RegisterActivity extends ZrowActivity {
         progressDialog.show();
         call.enqueue( new Callback<BaseDomain>() {
             @Override
-            public void onResponse(Call<BaseDomain> call, Response<BaseDomain> response) {
+            public void onResponse(@NotNull Call<BaseDomain> call, @NotNull Response<BaseDomain> response) {
                 if (response.isSuccessful()) {
                     try {
-                        if (response.body().getStatus().equalsIgnoreCase( "success" )) {
-                            progressDialog.dismiss();
-                            UserData userData = new UserData();
-                            userData.setAutoId( unique );
-                            userLocalStore.storeUserData( userData );
-                            userLocalStore.setLoggedIn( true );
-                            Toast.makeText( thisActivity, userRequest.getEmail() + " successfully registerd", Toast.LENGTH_SHORT ).show();
-                            Intent i = new Intent( thisActivity, MainActivity.class );
-                            startActivity( i );
-                            finish();
-                        } else {
-                            if((response.body().getStatus().equalsIgnoreCase( "user already exist" ))){
-                                Toast.makeText( thisActivity,"Email already existed", Toast.LENGTH_LONG).show();
+                        if (response.body() != null) {
+                            if (response.body().getStatus().equalsIgnoreCase( "success" )) {
+                                progressDialog.dismiss();
+                                UserData userData = new UserData();
+                                userData.setAutoId( unique );
+                                userLocalStore.storeUserData( userData );
+                                userLocalStore.setLoggedIn( true );
+                                Toast.makeText( thisActivity, userRequest.getEmail() + " successfully registerd", Toast.LENGTH_SHORT ).show();
+                                Intent i = new Intent( thisActivity, MainActivity.class );
+                                startActivity( i );
+                                finish();
+                            } else {
+                                if((response.body().getStatus().equalsIgnoreCase( "user already exist" ))){
+                                    Toast.makeText( thisActivity,"Email already existed", Toast.LENGTH_LONG).show();
+                                }
+                                progressDialog.dismiss();
+                                String msg = response.body().getMsg();
+                                messageHelper.shortMessage( msg );
                             }
-                            progressDialog.dismiss();
-                            String msg = response.body().getMsg();
-                            messageHelper.shortMessage( msg );
                         }
                     } catch (Exception err) {
                         err.printStackTrace();
@@ -195,16 +199,18 @@ public class RegisterActivity extends ZrowActivity {
                     } else {
                         try {
                             messageHelper.shortMessage( Messages.PROBLEM_CONNECT_SERVER );
-                            Log.e( "--> onResponse", "error -> " + response.errorBody().string() );
+                            if (response.errorBody() != null) {
+                                Log.e( "--> onResponse", "error -> " + response.errorBody().string() );
+                            }
                         } catch (Exception err) {
-                            Log.e( "--> Exception", err.getStackTrace().toString() );
+                            Log.e( "--> Exception", Arrays.toString( err.getStackTrace() ) );
                         }
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<BaseDomain> call, Throwable t) {
+            public void onFailure(@NotNull Call<BaseDomain> call, @NotNull Throwable t) {
                 try {
                     progressDialog.dismiss();
                     messageHelper.shortMessage( Messages.PROBLEM_CONNECT_SERVER );
@@ -220,13 +226,13 @@ public class RegisterActivity extends ZrowActivity {
 
     public static class GenerateRandomString {
 
-        public static final String DATA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        public static Random RANDOM = new Random();
+        static final String DATA = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+         static Random RANDOM = new Random();
 
-        public static String randomString(int len) {
-            StringBuilder sb = new StringBuilder( len );
+         static String randomString() {
+            StringBuilder sb = new StringBuilder( 10 );
 
-            for (int i = 0; i < len; i++) {
+            for (int i = 0; i < 10; i++) {
                 sb.append( DATA.charAt( RANDOM.nextInt( DATA.length() ) ) );
             }
 
@@ -303,7 +309,9 @@ public class RegisterActivity extends ZrowActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 InputMethodManager imm = (InputMethodManager) getSystemService( Activity.INPUT_METHOD_SERVICE );
-                imm.toggleSoftInput( InputMethodManager.HIDE_IMPLICIT_ONLY, 0 );
+                if (imm != null) {
+                    imm.toggleSoftInput( InputMethodManager.HIDE_IMPLICIT_ONLY, 0 );
+                }
             }
         } );
     }

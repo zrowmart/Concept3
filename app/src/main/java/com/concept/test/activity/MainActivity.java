@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -55,6 +56,7 @@ public class MainActivity extends ZrowActivity {
         recyclerView = findViewById( R.id.recycler_view );
         postAdapter = new PostAdapter( postList, R.layout.post_list, getApplicationContext() );
         category = findViewById( R.id.categories );
+        category.setOnItemClickListener( (AdapterView.OnItemClickListener) thisActivity );
         filter = findViewById( R.id.filter_post );
         filter.setOnCheckedChangeListener( new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -151,6 +153,7 @@ public class MainActivity extends ZrowActivity {
             }
         } );
     }
+
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();

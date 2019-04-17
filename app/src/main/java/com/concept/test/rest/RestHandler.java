@@ -13,8 +13,6 @@ public class RestHandler {
 
     private static ApiService API_SERVICE;
 
-    //public static String BASE_URL = "http://zrow.in/api/";
-    //public static String BASE_URL = "https://ruchirishi.net/concept/";
     public static String BASE_URL = "http://unityacademy.in/concept/";
 
 

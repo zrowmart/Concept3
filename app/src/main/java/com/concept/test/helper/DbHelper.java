@@ -19,8 +19,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + COL_1+ "TEXT, "+ COL_2 +" TEXT)";
+        String createTable = "CREATE TABLE " + TABLE_NAME + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + COL_1+ " TEXT, "+ COL_2 +" TEXT)";
         db.execSQL( createTable );
+        addData( "ankit sukla","Nothing much" );
     }
 
     @Override
@@ -35,7 +36,6 @@ public class DbHelper extends SQLiteOpenHelper {
         contentValues.put( COL_1,item1 );
         contentValues.put(COL_2,item2);
         Log.d("YTA","addData: Adding" + item1 + "and" + item2 + TABLE_NAME);
-
         long result = db.insert( TABLE_NAME,null,contentValues );
         if(result == 1){
             return false;

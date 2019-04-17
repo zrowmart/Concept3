@@ -7,16 +7,13 @@ import com.concept.test.rest.request.ShowMyPost;
 import com.concept.test.rest.request.UserRequest;
 import com.concept.test.rest.response.PostResponse;
 import com.concept.test.rest.response.SettingResponse;
-import com.concept.test.rest.response.UserResponse;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 
 
 public interface ApiService {
@@ -35,7 +32,7 @@ public interface ApiService {
 
     @POST("showMyPost.php")
     Call<ShowMyPost> showMyPost(@Body ShowMyPost showMyPost);
-//
-//    @GET
-//    Call<> fetchCategory();
+
+//    @GET("fetchCategory.php")
+//    Call<List<CategoryResponse>> getCategory();
 }

@@ -2,7 +2,6 @@ package com.concept.test.activity;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
@@ -17,7 +16,10 @@ import com.concept.test.rest.request.SettingRequest;
 import com.concept.test.rest.response.SettingResponse;
 import com.concept.test.util.ZrowActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.net.HttpURLConnection;
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,7 +61,7 @@ public class LoginActivity extends ZrowActivity {
         String fusername = username.getText().toString().trim();
         String fpassword = password.getText().toString().trim();
 
-        if (fusername.isEmpty() || fusername.equals("") || fusername == null || fpassword.isEmpty() || fpassword.equals("") || fpassword == null) {
+        if (fusername.isEmpty() || fpassword.isEmpty()) {
             textError.setError("Please Enter data in all field");
         }else{
             Values.username = fusername;
@@ -76,19 +78,21 @@ public class LoginActivity extends ZrowActivity {
         progressDialog.show();
         call.enqueue(new Callback<SettingResponse>() {
             @Override
-            public void onResponse(Call<SettingResponse> call, Response<SettingResponse> response) {
+            public void onResponse(@NotNull Call<SettingResponse> call, @NotNull Response<SettingResponse> response) {
                 if (response.isSuccessful()) {
                     try {
-                        if (response.body().getStatus().equalsIgnoreCase("success")) {
-                            progressDialog.dismiss();
-                            //Values.otp = response.body().getOtp();
-                            Intent signIn = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(signIn);
-                        } else {
-                            progressDialog.dismiss();
-                            String msg = response.body().getMsg();
-                            //messageHelper.shortMessage(Messages.WRONG_VALUE);
-                            messageHelper.shortMessage(msg);
+                        if (response.body() != null) {
+                            if (response.body().getStatus().equalsIgnoreCase("success")) {
+                                progressDialog.dismiss();
+                                //Values.otp = response.body().getOtp();
+                                Intent signIn = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(signIn);
+                            } else {
+                                progressDialog.dismiss();
+                                String msg = response.body().getMsg();
+                                //messageHelper.shortMessage(Messages.WRONG_VALUE);
+                                messageHelper.shortMessage(msg);
+                            }
                         }
                     } catch (Exception err) {
                         err.printStackTrace();
@@ -104,23 +108,22 @@ public class LoginActivity extends ZrowActivity {
                     } else {
                         try {
                             messageHelper.shortMessage(Messages.PROBLEM_CONNECT_SERVER);
+                            assert response.errorBody() != null;
                             Log.e("--> onResponse", "error -> " + response.errorBody().string());
                         } catch (Exception err) {
-                            Log.e("--> Exception", err.getStackTrace().toString());
+                            Log.e("--> Exception", Arrays.toString( err.getStackTrace() ) );
                         }
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<SettingResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<SettingResponse> call, @NotNull Throwable t) {
                 try {
                     progressDialog.dismiss();
-                    if (t != null) {
-                        messageHelper.shortMessage(Messages.PROBLEM_CONNECT_SERVER);
-                        if (t instanceof Exception) {
-                            t.printStackTrace();
-                        }
+                    messageHelper.shortMessage(Messages.PROBLEM_CONNECT_SERVER);
+                    if (t instanceof Exception) {
+                        t.printStackTrace();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

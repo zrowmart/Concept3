@@ -2,9 +2,9 @@ package com.concept.test.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.speech.RecognizerIntent;
@@ -21,10 +21,7 @@ import com.concept.test.helper.DbHelper;
 import com.concept.test.helper.Messages;
 import com.concept.test.rest.RestHandler;
 import com.concept.test.rest.request.PostRequest;
-import com.concept.test.rest.request.SettingRequest;
 import com.concept.test.rest.response.PostResponse;
-import com.concept.test.rest.response.SettingResponse;
-import com.concept.test.util.UserLocalStore;
 import com.concept.test.util.ZrowActivity;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -33,15 +30,13 @@ import com.karumi.dexter.listener.DexterError;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.vikramezhil.droidspeech.DroidSpeech;
-import com.vikramezhil.droidspeech.OnDSListener;
-import com.vikramezhil.droidspeech.OnDSPermissionsListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -90,14 +85,15 @@ public class InputActivity extends ZrowActivity{
         autoId = userLocalStore.fetchUserData().getAutoId();
     }
 
+
     public void getSpeechInput(View view){
-
-
         Intent intent = new Intent( RecognizerIntent.ACTION_RECOGNIZE_SPEECH );
         intent.putExtra( RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM );
         intent.putExtra( RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS,500000 );
         intent.putExtra( RecognizerIntent.EXTRA_LANGUAGE, "hi-IN" );
-        intent.putExtra( RecognizerIntent.EXTRA_PREFER_OFFLINE, "hi-IN" );
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            intent.putExtra( RecognizerIntent.EXTRA_PREFER_OFFLINE, "hi-IN" );
+        }
         intent.putExtra( RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, "hi-IN" );
         intent.putExtra( RecognizerIntent.EXTRA_PROMPT, "बोलना शुरू करें" );
         if(intent.resolveActivity( getPackageManager() )!= null){
@@ -220,18 +216,20 @@ public class InputActivity extends ZrowActivity{
         progressDialog.show();
         call.enqueue(new Callback<PostResponse>() {
             @Override
-            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+            public void onResponse(@NotNull Call<PostResponse> call, @NotNull Response<PostResponse> response) {
                 if (response.isSuccessful()) {
                     try {
-                        if (response.body().getStatus().equalsIgnoreCase("success")) {
-                            progressDialog.dismiss();
-                            Intent i = new Intent(thisActivity, MainActivity.class);
-                            startActivity(i);
-                        } else {
-                            progressDialog.dismiss();
-                            String msg = response.body().getMsg();
-                            //messageHelper.shortMessage(Messages.WRONG_VALUE);
-                            messageHelper.shortMessage(msg);
+                        if (response.body() != null) {
+                            if (response.body().getStatus().equalsIgnoreCase("success")) {
+                                progressDialog.dismiss();
+                                Intent i = new Intent(thisActivity, MainActivity.class);
+                                startActivity(i);
+                            } else {
+                                progressDialog.dismiss();
+                                String msg = response.body().getMsg();
+                                //messageHelper.shortMessage(Messages.WRONG_VALUE);
+                                messageHelper.shortMessage(msg);
+                            }
                         }
                     } catch (Exception err) {
                         err.printStackTrace();
@@ -247,23 +245,23 @@ public class InputActivity extends ZrowActivity{
                     } else {
                         try {
                             messageHelper.shortMessage(Messages.PROBLEM_CONNECT_SERVER);
-                            Log.e("--> onResponse", "error -> " + response.errorBody().string());
+                            if (response.errorBody() != null) {
+                                Log.e("--> onResponse", "error -> " + response.errorBody().string());
+                            }
                         } catch (Exception err) {
-                            Log.e("--> Exception", err.getStackTrace().toString());
+                            Log.e("--> Exception", Arrays.toString( err.getStackTrace() ) );
                         }
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<PostResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<PostResponse> call, @NotNull Throwable t) {
                 try {
                     progressDialog.dismiss();
-                    if (t != null) {
-                        messageHelper.shortMessage(Messages.PROBLEM_CONNECT_SERVER);
-                        if (t instanceof Exception) {
-                            t.printStackTrace();
-                        }
+                    messageHelper.shortMessage(Messages.PROBLEM_CONNECT_SERVER);
+                    if (t instanceof Exception) {
+                        t.printStackTrace();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

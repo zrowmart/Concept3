@@ -1,18 +1,13 @@
 package com.concept.test.activity;
 
-import android.app.SearchManager;
-import android.content.Context;
+
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.concept.test.R;
@@ -22,8 +17,11 @@ import com.concept.test.rest.RestHandler;
 import com.concept.test.rest.response.PostResponse;
 import com.concept.test.util.ZrowActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -44,8 +42,6 @@ public class MyPostActivity extends ZrowActivity {
         init();
         recyclerView =  findViewById( R.id.recycler_view );
         postAdapter = new PostAdapter( postList,R.layout.post_list,getApplicationContext() );
-//        Button bi = findViewById( R.id.inputActivity );
-//        Button reg = findViewById( R.id.register );
         mSwipeRefreshLayout = findViewById( R.id.swiperefresh );
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -76,10 +72,12 @@ public class MyPostActivity extends ZrowActivity {
         progressDialog.show();
         call.enqueue( new Callback<List<PostResponse>>() {
             @Override
-            public void onResponse(Call<List<PostResponse>> call, Response<List<PostResponse>> response) {
+            public void onResponse(@NotNull Call<List<PostResponse>> call, @NotNull Response<List<PostResponse>> response) {
                 if (response.isSuccessful()) {
                     try {
-                        long listLength = response.body().size();
+                        if (response.body() != null) {
+                            long listLength = response.body().size();
+                        }
                         List<PostResponse> postList = response.body();
                         postAdapter = new PostAdapter( postList,R.layout.post_list,getApplicationContext() );
                         recyclerView.setAdapter( postAdapter );
@@ -99,16 +97,18 @@ public class MyPostActivity extends ZrowActivity {
                     } else {
                         try {
                             messageHelper.shortMessage( Messages.PROBLEM_CONNECT_SERVER );
-                            Log.e( "--> onResponse", "error -> " + response.errorBody().string() );
+                            if (response.errorBody() != null) {
+                                Log.e( "--> onResponse", "error -> " + response.errorBody().string() );
+                            }
                         } catch (Exception err) {
-                            Log.e( "--> Exception", err.getStackTrace().toString() );
+                            Log.e( "--> Exception", Arrays.toString( err.getStackTrace() ) );
                         }
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<PostResponse>> call, Throwable t) {
+            public void onFailure(@NotNull Call<List<PostResponse>> call, @NotNull Throwable t) {
                 try {
                     progressDialog.dismiss();
                     messageHelper.shortMessage( Messages.PROBLEM_CONNECT_SERVER );
