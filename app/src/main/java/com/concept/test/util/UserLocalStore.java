@@ -6,15 +6,15 @@ import android.content.SharedPreferences;
 import com.concept.test.model.UserData;
 
 public class UserLocalStore {
-    public static final String user_pref = "userdetails";
-    SharedPreferences userLocalDatabase;
-    public static final String email = "email";
+    private static final String user_pref = "userdetails";
+    private SharedPreferences userLocalDatabase;
+    private static final String email = "email";
     public static final String password = "password";
-    public static final String autoId = "autoId";
-    public static final String isLoggedIn = "isLoggedIn";
-    Context context;
+    private static final String autoId = "autoId";
+    private static final String isLoggedIn = "isLoggedIn";
+    private Context context;
 
-    public UserLocalStore(Context context) {
+     UserLocalStore(Context context) {
         this.context = context;
         userLocalDatabase = context.getSharedPreferences(user_pref, 0);
     }
@@ -24,7 +24,7 @@ public class UserLocalStore {
         peditor.putString(email, userData.getEmail());
         peditor.putString(password, userData.getPassword());
         peditor.putString( autoId,userData.getAutoId() );
-        peditor.commit();
+        peditor.apply();
     }
 
     public void resetUserData() {
@@ -32,7 +32,7 @@ public class UserLocalStore {
         peditor.putString(email, "");
         peditor.putString(password, "");
         peditor.putBoolean(isLoggedIn, false);
-        peditor.commit();
+        peditor.apply();
     }
 
     public UserData fetchUserData() {
@@ -50,7 +50,6 @@ public class UserLocalStore {
     public void setLoggedIn(Boolean state) {
         SharedPreferences.Editor peditor = userLocalDatabase.edit();
         peditor.putBoolean(isLoggedIn, state);
-        peditor.commit();
+        peditor.apply();
     }
-
 }
