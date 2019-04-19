@@ -79,7 +79,7 @@ public class RegisterActivity extends ZrowActivity {
             }
         } );
         age = findViewById( R.id.ageEditor );
-        username = findViewById( R.id.input_username );
+//        username = findViewById( R.id.input_username );
         email = findViewById( R.id.input_email );
         password = findViewById( R.id.input_password );
         tnc = findViewById( R.id.tnc_check );

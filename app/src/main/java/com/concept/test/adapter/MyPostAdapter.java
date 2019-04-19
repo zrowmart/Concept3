@@ -10,20 +10,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.concept.test.R;
+import com.concept.test.rest.request.ShowMyPost;
 import com.concept.test.rest.response.PostResponse;
 
 import java.util.List;
 
 public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder> {
 
-    private List<PostResponse> postList;
+    private List<ShowMyPost> myPostList;
     int rowLayout;
     Context context;
 
-    public MyPostAdapter(List<PostResponse> values, int rowLayout, Context context) {
+    public MyPostAdapter(List<ShowMyPost> values, int rowLayout, Context context) {
         this.context = context;
         this.rowLayout = rowLayout;
-        this.postList = values;
+        this.myPostList = values;
 
 
     }
@@ -38,14 +39,14 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyPostAdapter.ViewHolder viewHolder, int i) {
-        PostResponse postResponse = postList.get( i );
-        viewHolder.textTitle.setText( postResponse.getTitle() );
-        viewHolder.textDetail.setText( postResponse.getPost() );
+        ShowMyPost myPostResponse = myPostList.get( i );
+        viewHolder.textTitle.setText( myPostResponse.getTitle() );
+        viewHolder.textDetail.setText( myPostResponse.getPost() );
     }
 
     @Override
     public int getItemCount() {
-        return postList.size();
+        return myPostList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

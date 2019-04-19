@@ -8,39 +8,42 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.TextView;
 import com.concept.test.R;
 import com.concept.test.activity.FullStoryActivity;
 import com.concept.test.rest.response.PostResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     private final Context context;
-    private CardView cardView;
     private List<PostResponse> postList;
     private int rowLayout;
     private String title = null;
     private String detail = null;
 
-    public PostAdapter(List<PostResponse> values, int rowLayout, Context context) {
+    public PostAdapter(List<PostResponse> postList, int rowLayout, Context context) {
+        this.postList = postList;
         this.context = context;
         this.rowLayout = rowLayout;
-        this.postList = values;
+
     }
 
     @NonNull
     @Override
     public PostAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-//        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = LayoutInflater.from( viewGroup.getContext() ).inflate( rowLayout, viewGroup, false );
         return new ViewHolder( view );
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final PostAdapter.ViewHolder viewHolder, final int i) {
-        PostResponse postResponse = postList.get( i );
+    public void onBindViewHolder(@NonNull PostAdapter.ViewHolder viewHolder, final int position) {
+        final PostResponse postResponse = postList.get( position );
+        CardView cardView = viewHolder.cardView;
+
         viewHolder.textTitle.setText( postResponse.getTitle() );
         viewHolder.textDetail.setText( postResponse.getPost().substring( 0, 100 ) );
         title = postResponse.getTitle();
@@ -49,8 +52,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent( context, FullStoryActivity.class );
-                intent.putExtra( "PostTitle", title );
-                intent.putExtra( "PostDetail", detail );
+//                intent.putExtra( "PostTitle", title );
+//                intent.putExtra( "PostDetail", detail );
+                intent.putExtra( "PostTitle" ,postResponse.getTitle());
+                intent.putExtra( "PostDetail", postResponse.getPost());
                 v.getContext().startActivity( intent );
             }
         } );
@@ -64,6 +69,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView textTitle;
         TextView textDetail;
+        CardView cardView;
         View layout;
 
         ViewHolder(@NonNull View itemView) {
@@ -74,4 +80,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             cardView = itemView.findViewById( R.id.storyCard );
         }
     }
+
+    public void setFilter(List<PostResponse> searchList){
+        postList = new ArrayList<>(  );
+        postList.addAll( searchList );
+        notifyDataSetChanged();
+    }
+
+
+
 }

@@ -4,15 +4,15 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-class ConnectionDetector {
+public class ConnectionDetector {
 
     private Context context;
 
-    ConnectionDetector(Context context) {
+    public ConnectionDetector(Context context) {
         this.context = context;
     }
 
-    boolean isConnectedToInternet() {
+    public boolean isConnectedToInternet() {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService( Context.CONNECTIVITY_SERVICE );
         NetworkInfo activeNetworkInfo = null;
         if (connectivityManager != null) {

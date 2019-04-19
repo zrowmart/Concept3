@@ -1,17 +1,15 @@
 package com.concept.test.rest.request;
 
 public class SettingRequest {
-    String username,password;
 
-    public SettingRequest() {
+    String email, password;
+
+    public String getEmail() {
+        return email;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -25,7 +23,7 @@ public class SettingRequest {
     @Override
     public String toString() {
         return "SettingRequest{" +
-                "username='" + username + '\'' +
+                "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

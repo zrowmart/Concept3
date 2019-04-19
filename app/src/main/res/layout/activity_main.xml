@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F3E2AE"
+    android:id="@+id/mainActivity"
     tools:context=".activity.MainActivity">
 
     <RadioGroup
@@ -33,17 +34,21 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:text="@string/mypost" />
     </RadioGroup>
 
     <android.support.v7.widget.AppCompatSpinner
         android:id="@+id/categories"
-        android:layout_width="match_parent"
+        android:layout_width="200sp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/filter_post"
+        android:background="@color/white"
+        android:padding="5dp"
+        android:layout_margin="10dp"
         />
 
-    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -73,8 +78,12 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_record"
-        android:layout_margin="26dp" />
-
-
+        android:layout_margin="26dp"
+        android:layout_alignParentEnd="true" />
+    <View
+        android:id="@+id/view_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dip"
+        android:background="#E60F0F" />
 
 </RelativeLayout>

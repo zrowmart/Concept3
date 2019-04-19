@@ -27,7 +27,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends ZrowActivity {
 
-    EditText username, password;
+    public EditText email, password;
     AppCompatButton login;
     TextInputLayout textError;
 
@@ -39,7 +39,7 @@ public class LoginActivity extends ZrowActivity {
         thisActivity = LoginActivity.this;
         init();
 
-        username = findViewById( R.id.input_username );
+        email = findViewById( R.id.input_email );
         password = findViewById( R.id.input_password );
         login = findViewById( R.id.btn_login );
 
@@ -58,15 +58,17 @@ public class LoginActivity extends ZrowActivity {
     }
 
     private void checkText(){
-        String fusername = username.getText().toString().trim();
+        String femail = email.getText().toString().trim();
         String fpassword = password.getText().toString().trim();
 
-        if (fusername.isEmpty() || fpassword.isEmpty()) {
+        if (femail.isEmpty() || fpassword.isEmpty()) {
             textError.setError("Please Enter data in all field");
         }else{
-            Values.username = fusername;
+            Values.username = femail;
+            Log.d("popo",femail + " "+ fpassword);
             SettingRequest settingRequest = new SettingRequest();
-            settingRequest.setUsername(fusername);
+            settingRequest.setEmail(femail);
+            settingRequest.setPassword( fpassword );
             signInUser(settingRequest);
         }
 
@@ -84,13 +86,12 @@ public class LoginActivity extends ZrowActivity {
                         if (response.body() != null) {
                             if (response.body().getStatus().equalsIgnoreCase("success")) {
                                 progressDialog.dismiss();
-                                //Values.otp = response.body().getOtp();
                                 Intent signIn = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(signIn);
+                                finish();
                             } else {
                                 progressDialog.dismiss();
                                 String msg = response.body().getMsg();
-                                //messageHelper.shortMessage(Messages.WRONG_VALUE);
                                 messageHelper.shortMessage(msg);
                             }
                         }
@@ -102,7 +103,6 @@ public class LoginActivity extends ZrowActivity {
                 } else {
                     if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
                         progressDialog.dismiss();
-                        //messageHelper.shortMessage(Messages.WRONG_VALUE);
                         messageHelper.shortMessage(Messages.NO_INTERNET_CONNECTIVITY);
 
                     } else {

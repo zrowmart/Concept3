@@ -5,10 +5,9 @@ public class Messages {
     public static final String NO_INTERNET_CONNECTIVITY = "Kindly, connect to internet";
     public static final String PERM_NETWORK_ACCESS = "Kindly, provide network accees permission";
     public static final String PERM_NETWORK_CONNECT = "Kindly, provide network connectivity permission";
+    public static final String UNABLE_FETCH_CATEGORY = "Unable to fetch Category";
 
     public static final String PERMISSIONS_REQD = "Kindly provide required permissions";
-
-
     public static final String FILL_IN_USRNAME = "Kindly, fill in username";
     public static final String FILL_IN_MOBNO = "Kindly, fill in password";
     public static final String WRONG_VALUE = "Incorrect username and / or password";
@@ -17,7 +16,7 @@ public class Messages {
     public static final String PASSWORD_NOT_CHANGE = "Password is not change";
     public static final String MOBILE_NOT_CHANGE = "Mobile Number is not change";
 
-    public static final String FETCHING_POST = "Fetching Post";
+    public static final String FETCHING_POST = "Loading Story";
 
 
     public static final String PROBLEM_CONNECT_SERVER = "Problem to connecting with server";

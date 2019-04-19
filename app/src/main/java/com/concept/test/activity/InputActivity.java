@@ -2,11 +2,12 @@ package com.concept.test.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -17,11 +18,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.concept.test.R;
-import com.concept.test.helper.DbHelper;
 import com.concept.test.helper.Messages;
 import com.concept.test.rest.RestHandler;
 import com.concept.test.rest.request.PostRequest;
 import com.concept.test.rest.response.PostResponse;
+import com.concept.test.util.ConnectionDetector;
 import com.concept.test.util.ZrowActivity;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -30,14 +31,11 @@ import com.karumi.dexter.listener.DexterError;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,8 +44,7 @@ public class InputActivity extends ZrowActivity{
 
     EditText enterMsg;
     ImageView start, stop;
-    String finalMsg = " ";
-    DbHelper dbHelper;
+    String finalMsg = "";
     String autoId;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -58,27 +55,16 @@ public class InputActivity extends ZrowActivity{
         thisActivity = InputActivity.this;
         init();
         checkPermission();
+        ConnectionDetector connectionDetector = new ConnectionDetector( thisActivity );
+        if(!connectionDetector.isConnectedToInternet()){
+            Toast.makeText( thisActivity, "You are using app in offline mode!!!", Toast.LENGTH_SHORT ).show();
+        }
         enterMsg = findViewById( R.id.enter_message );
         start = findViewById( R.id.playButton );
         stop = findViewById( R.id.stopButton );
-        dbHelper = new DbHelper(this);
-//        start.setOnClickListener(  getBaseContext() );
-//        stop.setOnClickListener( thisActivity );
         start.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                new CountDownTimer( 7000,1000 ){
-
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                    }
-                }.start();
                 getSpeechInput( v );
             }
         } );
@@ -115,7 +101,6 @@ public class InputActivity extends ZrowActivity{
                     ArrayList<String> result = data.getStringArrayListExtra( RecognizerIntent.EXTRA_RESULTS );
                     finalMsg += result.get( 0 ) + "| ";
                     enterMsg.setText( finalMsg );
-
                 }
                 break;
         }
@@ -125,7 +110,6 @@ public class InputActivity extends ZrowActivity{
         if (ContextCompat.checkSelfPermission( this, Manifest.permission.RECORD_AUDIO )
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermission();
-            // Permission is not granted
         }
     }
 
@@ -173,7 +157,7 @@ public class InputActivity extends ZrowActivity{
                 sendPost();
                 return (true);
             case R.id.list_data:
-                Intent in = new Intent( this,ListDataActivity.class );
+                Intent in = new Intent( this, ListActivity.class );
                 startActivity( in );
                 return (true);
         }
@@ -181,26 +165,19 @@ public class InputActivity extends ZrowActivity{
     }
 
     private void sendPost() {
-        Log.d("bca",finalMsg);
+        String added = enterMsg.getText().toString();
+        Log.d("bca",added);
+
         if(enterMsg.getText().toString().trim().length() != 0){
-            addData( finalMsg,"nothing" );
-//            PostRequest postRequest = new PostRequest();
-//            postRequest.setAutoId( autoId );
-//            //postRequest.setPost( "post test " );
-//            postRequest.setPost( added );
-//            insertUserPost(postRequest);
+            PostRequest postRequest = new PostRequest();
+            postRequest.setAutoId( autoId );
+            //postRequest.setPost( "post test " );
+            postRequest.setPost( added);
+            insertUserPost(postRequest);
             enterMsg.getText().clear();
             finish();
+            toastMsg( "We will verify story and publish it soon! " );
         }else{
-            toastMsg( "We are unable to post data this time" );
-        }
-    }
-
-    public void addData(String item1, String item2) {
-        boolean insertdata = dbHelper.addData( item1, item2 );
-        if (insertdata) {
-            toastMsg( "Your post submitted, will publish after verifying after title" );
-        } else {
             toastMsg( "We are unable to post data this time" );
         }
     }

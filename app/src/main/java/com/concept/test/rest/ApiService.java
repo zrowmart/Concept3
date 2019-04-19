@@ -1,6 +1,8 @@
 package com.concept.test.rest;
 
 import com.concept.test.model.BaseDomain;
+import com.concept.test.model.Category;
+import com.concept.test.model.CategoryResult;
 import com.concept.test.rest.request.PostRequest;
 import com.concept.test.rest.request.SettingRequest;
 import com.concept.test.rest.request.ShowMyPost;
@@ -30,9 +32,13 @@ public interface ApiService {
     @POST("addPost.php")
     Call<PostResponse> insertUserPost(@Body PostRequest postRequest);
 
-    @POST("showMyPost.php")
-    Call<ShowMyPost> showMyPost(@Body ShowMyPost showMyPost);
+    @GET("showMyPost.php")
+    Call<List<ShowMyPost>> getMyPostDetail();
 
-//    @GET("fetchCategory.php")
-//    Call<List<CategoryResponse>> getCategory();
+    @GET("fetchCategory.php")
+    Call<List<Category>> getCategory();
+
+    @GET("categoryResult.php")
+    Call<List<CategoryResult>> getCategoryResult();
+
 }

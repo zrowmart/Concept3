@@ -25,4 +25,7 @@
     <string name="all">All</string>
     <string name="favourite">Favourite</string>
     <string name="mypost">My Post</string>
+
+
+    <string name="empty_list_text">You have nothing to sbow</string>
 </resources>

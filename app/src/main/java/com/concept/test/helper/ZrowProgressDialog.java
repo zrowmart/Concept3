@@ -6,8 +6,8 @@ import android.app.ProgressDialog;
 import com.concept.test.R;
 
 public class ZrowProgressDialog {
-    Activity activity;
-    ProgressDialog progressDialog;
+    private Activity activity;
+    private ProgressDialog progressDialog;
 
     public ZrowProgressDialog(Activity activity) {
         this.activity = activity;

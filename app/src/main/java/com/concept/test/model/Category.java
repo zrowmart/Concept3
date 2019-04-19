@@ -13,8 +13,6 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "category='" + category + '\'' +
-                '}';
+        return category;
     }
 }
