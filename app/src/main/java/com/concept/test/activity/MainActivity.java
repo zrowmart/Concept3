@@ -110,8 +110,9 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
         fab.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent( thisActivity, InputActivity.class );
+                Intent intent = new Intent( thisActivity, IntroActivity.class );
                 startActivity( intent );
+
             }
         } );
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager( getApplicationContext() );
@@ -256,9 +257,9 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
                     }
                 }
                 return (true);
-            case R.id.myPost:
-                Intent postIntent = new Intent( thisActivity,MyPostActivity.class );
-                startActivity(postIntent);
+//            case R.id.myPost:
+//                Intent postIntent = new Intent( thisActivity,MyPostActivity.class );
+//                startActivity(postIntent);
         }
         return(super.onOptionsItemSelected(item));
     }

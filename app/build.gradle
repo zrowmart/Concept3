@@ -38,6 +38,9 @@ dependencies {
 
     implementation 'com.github.vikramezhil:DroidSpeech:v2.0.3'
     implementation 'org.jetbrains:annotations-java5:15.0'
+    implementation 'agency.tango.android:material-intro-screen:0.0.5'
+    implementation 'com.github.ViksaaSkool:AwesomeSplash:v1.0.0'
+//    implementation 'com.github.AppIntro:AppIntro:4.2.3'
 
 
 }

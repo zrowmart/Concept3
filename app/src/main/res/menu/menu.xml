@@ -11,8 +11,8 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/myPost"
-        android:title="My Post" />
+    <!--<item-->
+        <!--android:id="@+id/myPost"-->
+        <!--android:title="My Post" />-->
 
 </menu>

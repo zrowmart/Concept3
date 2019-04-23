@@ -70,7 +70,7 @@ public class RegisterActivity extends ZrowActivity {
             finish();
         }
 
-        Button login = findViewById( R.id.login );
+        TextView login = findViewById( R.id.alreadyAccount );
         login.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,7 +179,7 @@ public class RegisterActivity extends ZrowActivity {
                                 finish();
                             } else {
                                 if((response.body().getStatus().equalsIgnoreCase( "user already exist" ))){
-                                    Toast.makeText( thisActivity,"Email already existed", Toast.LENGTH_LONG).show();
+                                    Toast.makeText( thisActivity,"Email already existed, Please login or use different emial id", Toast.LENGTH_LONG).show();
                                 }
                                 progressDialog.dismiss();
                                 String msg = response.body().getMsg();
