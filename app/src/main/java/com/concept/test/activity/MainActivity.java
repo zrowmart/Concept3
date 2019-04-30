@@ -49,11 +49,10 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
     SwipeRefreshLayout mSwipeRefreshLayout;
     Spinner categorySpinner;
     RadioGroup filter;
-    String myId = null;
+    String myId = "";
     private PostAdapter postAdapter;
     private MyPostAdapter myPostAdapter;
     private RecyclerView recyclerView;
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -64,7 +63,7 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
         thisActivity = MainActivity.this;
         Locale.setDefault( Locale.forLanguageTag( "hi" ) );
         init();
-        myId = userLocalStore.fetchUserData().getAutoId();
+//        myId = userLocalStore.fetchUserData().getAutoId();
         recyclerView = findViewById( R.id.recycler_view );
         postAdapter = new PostAdapter( postList, R.layout.post_list, getApplicationContext() );
         myPostAdapter = new MyPostAdapter( myPostList, R.layout.post_list, getApplicationContext() );
@@ -81,7 +80,8 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
                         break;
                     case R.id.mypost:
                         postList.clear();
-                        fetchMyPost( myId );
+                        Log.d( "iuyiuy",myId );
+                        fetchMyPost( myId);
                         break;
                     case R.id.favourite:
                         Toast.makeText( thisActivity, "Now!!!", Toast.LENGTH_SHORT ).show();
@@ -174,6 +174,7 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
         final Call<List<ShowMyPost>> call = RestHandler.getApiService().getMyPostDetail( autoId );
         progressDialog.setMessage( Messages.FETCHING_POST );
         progressDialog.show();
+        Log.d( "iuyiuy", "Log 3" );
         call.enqueue( new Callback<List<ShowMyPost>>() {
             @Override
             public void onResponse(@NotNull Call<List<ShowMyPost>> call, @NotNull Response<List<ShowMyPost>> response) {
@@ -339,9 +340,7 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String categoryValue = categorySpinner.getSelectedItem().toString();
         Log.d( "lkop","Selected category is " + categoryValue );
-        if(categoryValue.isEmpty()){
-
-        }else {
+        if(!categoryValue.isEmpty()){
             fetchFromCategory( categoryValue );
         }
     }
