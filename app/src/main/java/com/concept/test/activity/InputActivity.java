@@ -65,6 +65,8 @@ public class InputActivity extends ZrowActivity {
         if (!connectionDetector.isConnectedToInternet()) {
             Toast.makeText( thisActivity, "You are using app in offline mode!!!", Toast.LENGTH_SHORT ).show();
         }
+        Intent intent = getIntent();
+        String intentText = intent.getStringExtra( "post" );
         enterMsg = findViewById( R.id.enter_message );
         start = findViewById( R.id.playButton );
         stop = findViewById( R.id.stopButton );
@@ -75,6 +77,10 @@ public class InputActivity extends ZrowActivity {
             }
         } );
         autoId = userLocalStore.fetchUserData().getAutoId();
+
+        if(!(intentText == null)){
+            enterMsg.setText( intentText );
+        }
     }
 
 
@@ -164,6 +170,7 @@ public class InputActivity extends ZrowActivity {
             case R.id.list_data:
                 Intent in = new Intent( this, ListPost.class );
                 startActivity( in );
+                finish();
                 return (true);
         }
         return (super.onOptionsItemSelected( item ));

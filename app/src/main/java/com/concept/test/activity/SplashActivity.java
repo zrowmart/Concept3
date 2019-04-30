@@ -28,9 +28,7 @@ public class SplashActivity extends AwesomeSplash {
         configSplash.setAnimCircularRevealDuration(2000); //int ms
         configSplash.setRevealFlagX( Flags.REVEAL_RIGHT);  //or Flags.REVEAL_LEFT
         configSplash.setRevealFlagY(Flags.REVEAL_BOTTOM); //or Flags.REVEAL_TOP
-
         //Choose LOGO OR PATH; if you don't provide String value for path it's logo by default
-
         //Customize Logo
         configSplash.setLogoSplash(R.mipmap.ic_launcher); //or any other drawable
         configSplash.setAnimLogoSplashDuration(2000); //int ms
@@ -62,15 +60,28 @@ public class SplashActivity extends AwesomeSplash {
 
         //transit to another activity here
         //or do whatever you want
-        if(connectionDetector.isConnectedToInternet()){
-            Intent i = new Intent(SplashActivity.this, RegisterActivity.class);
-            startActivity(i);
-            finish();
-        }else{
-            Intent i = new Intent(SplashActivity.this, InputActivity.class);
-            startActivity(i);
-            finish();
+        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
+
+        if (isFirstRun) {
+            //show start activity
+
+            startActivity(new Intent(SplashActivity.this, IntroActivity.class));
+
+            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                    .putBoolean("isFirstRun", false).apply();
+        }else {
+            if (connectionDetector.isConnectedToInternet()) {
+                Intent i = new Intent( SplashActivity.this, RegisterActivity.class );
+                startActivity( i );
+                finish();
+            } else {
+                Intent i = new Intent( SplashActivity.this, InputActivity.class );
+                startActivity( i );
+                finish();
+            }
         }
+
     }
 }
 

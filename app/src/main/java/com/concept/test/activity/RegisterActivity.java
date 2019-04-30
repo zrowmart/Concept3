@@ -2,7 +2,9 @@ package com.concept.test.activity;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -62,6 +64,7 @@ public class RegisterActivity extends ZrowActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_register );
+
         thisActivity = RegisterActivity.this;
         init();
         if (userLocalStore.isLoggedIn()) {

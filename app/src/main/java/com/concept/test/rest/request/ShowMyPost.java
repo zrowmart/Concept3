@@ -1,14 +1,11 @@
 package com.concept.test.rest.request;
 
-import android.util.Log;
-
+import com.concept.test.model.BaseDomain;
 import com.concept.test.util.UserLocalStore;
 
-public class ShowMyPost {
+public class ShowMyPost extends BaseDomain {
 
-    private String title,post;
-    private UserLocalStore userLocalStore;
-    private String autoId = userLocalStore.fetchUserData().getAutoId() ;
+    private String title,post,autoId;
 
     public String getTitle() {
         return title;
@@ -37,9 +34,7 @@ public class ShowMyPost {
     @Override
     public String toString() {
         return "ShowMyPost{" +
-                "autoId='" + autoId + '\'' +
-                ", title='" + title + '\'' +
-                ", post='" + post + '\'' +
+                "autoId='" + autoId +
                 '}';
     }
 }

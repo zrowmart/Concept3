@@ -62,8 +62,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery( "select * from " + TABLE_NAME, null );
         return cursor;
-
     }
 
+    public Cursor idData(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, new String[] { COL_2 }, _ID + "=?",
+                new String[] { COL_2 }, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        // return contact
+        return cursor;
+    }
 
 }

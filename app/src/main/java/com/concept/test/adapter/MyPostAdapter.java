@@ -41,7 +41,7 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.ViewHolder
     public void onBindViewHolder(@NonNull MyPostAdapter.ViewHolder viewHolder, int i) {
         ShowMyPost myPostResponse = myPostList.get( i );
         viewHolder.textTitle.setText( myPostResponse.getTitle() );
-        viewHolder.textDetail.setText( myPostResponse.getPost() );
+        viewHolder.textDetail.setText( myPostResponse.getPost().substring( 0,100 ) );
     }
 
     @Override

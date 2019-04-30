@@ -3,6 +3,7 @@ package com.concept.test.rest;
 import com.concept.test.model.BaseDomain;
 import com.concept.test.model.Category;
 import com.concept.test.model.CategoryResult;
+import com.concept.test.rest.request.CategoryRequest;
 import com.concept.test.rest.request.PostRequest;
 import com.concept.test.rest.request.SettingRequest;
 import com.concept.test.rest.request.ShowMyPost;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
@@ -32,13 +34,13 @@ public interface ApiService {
     @POST("addPost.php")
     Call<PostResponse> insertUserPost(@Body PostRequest postRequest);
 
-    @GET("showMyPost.php")
-    Call<List<ShowMyPost>> getMyPostDetail();
+    @POST("showMyPost.php")
+    Call<List<ShowMyPost>> getMyPostDetail(@Body String showMyPost);
 
     @GET("fetchCategory.php")
     Call<List<Category>> getCategory();
 
     @GET("categoryResult.php")
-    Call<List<CategoryResult>> getCategoryResult();
+    Call<List<CategoryResult>> getCategoryResult(String categoryResult);
 
 }
