@@ -18,6 +18,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 
 public interface ApiService {
@@ -34,13 +35,14 @@ public interface ApiService {
     @POST("addPost.php")
     Call<PostResponse> insertUserPost(@Body PostRequest postRequest);
 
-    @POST("showMyPost.php")
-    Call<List<ShowMyPost>> getMyPostDetail(@Body String showMyPost);
+    @GET("showMyPost.php")
+    Call<List<ShowMyPost>> getMyPostDetail(@Query("autoId") String autoId);
+
 
     @GET("fetchCategory.php")
     Call<List<Category>> getCategory();
 
     @GET("categoryResult.php")
-    Call<List<CategoryResult>> getCategoryResult(String categoryResult);
+    Call<List<CategoryRequest>> getCategoryResult(@Query("category") String category);
 
 }

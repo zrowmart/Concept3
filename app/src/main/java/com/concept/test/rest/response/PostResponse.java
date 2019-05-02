@@ -48,7 +48,6 @@ public class PostResponse extends BaseDomain {
                 ", postId='" + postId + '\'' +
                 ", title='" + title + '\'' +
                 ", post='" + post + '\'' +
-
                 '}';
     }
 }

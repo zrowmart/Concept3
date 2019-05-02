@@ -34,7 +34,7 @@ public class ShowMyPost extends BaseDomain {
     @Override
     public String toString() {
         return "ShowMyPost{" +
-                "autoId='" + autoId +
+                "autoId='" + autoId + '\'' +
                 '}';
     }
 }

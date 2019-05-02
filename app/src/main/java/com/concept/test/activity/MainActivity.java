@@ -19,12 +19,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.concept.test.R;
+import com.concept.test.adapter.CategoryAdapter;
 import com.concept.test.adapter.MyPostAdapter;
 import com.concept.test.adapter.PostAdapter;
 import com.concept.test.helper.Messages;
 import com.concept.test.model.Category;
-import com.concept.test.model.CategoryResult;
 import com.concept.test.rest.RestHandler;
+import com.concept.test.rest.request.CategoryRequest;
 import com.concept.test.rest.request.ShowMyPost;
 import com.concept.test.rest.response.PostResponse;
 import com.concept.test.util.ZrowActivity;
@@ -45,13 +46,14 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
 
     List<PostResponse> postList = new ArrayList<>();
     List<ShowMyPost> myPostList = new ArrayList<>();
-    List<CategoryResult> categoryPostList = new ArrayList<>();
+    List<CategoryRequest> categoryPostList = new ArrayList<>();
     SwipeRefreshLayout mSwipeRefreshLayout;
     Spinner categorySpinner;
     RadioGroup filter;
-    String myId = "";
+    String myId = null;
     private PostAdapter postAdapter;
     private MyPostAdapter myPostAdapter;
+    private CategoryAdapter categoryAdapter;
     private RecyclerView recyclerView;
 
 
@@ -63,7 +65,7 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
         thisActivity = MainActivity.this;
         Locale.setDefault( Locale.forLanguageTag( "hi" ) );
         init();
-//        myId = userLocalStore.fetchUserData().getAutoId();
+        myId = userLocalStore.fetchUserData().getAutoId();
         recyclerView = findViewById( R.id.recycler_view );
         postAdapter = new PostAdapter( postList, R.layout.post_list, getApplicationContext() );
         myPostAdapter = new MyPostAdapter( myPostList, R.layout.post_list, getApplicationContext() );
@@ -80,8 +82,8 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
                         break;
                     case R.id.mypost:
                         postList.clear();
-                        Log.d( "iuyiuy",myId );
-                        fetchMyPost( myId);
+                        Log.d( "iuyiuy", myId );
+                        fetchMyPost( myId );
                         break;
                     case R.id.favourite:
                         Toast.makeText( thisActivity, "Now!!!", Toast.LENGTH_SHORT ).show();
@@ -109,10 +111,10 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
         recyclerView.setLayoutManager( mLayoutManager );
         recyclerView.setAdapter( postAdapter );
         recyclerView.setAdapter( myPostAdapter );
+        recyclerView.setAdapter( categoryAdapter );
         fetchPost();
         fetchCategory();
     }
-
 
     //Fetch Post
     private void fetchPost() {
@@ -171,6 +173,7 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
 
     //Fetch Post using autoId
     private void fetchMyPost(final String autoId) {
+
         final Call<List<ShowMyPost>> call = RestHandler.getApiService().getMyPostDetail( autoId );
         progressDialog.setMessage( Messages.FETCHING_POST );
         progressDialog.show();
@@ -179,7 +182,6 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
             @Override
             public void onResponse(@NotNull Call<List<ShowMyPost>> call, @NotNull Response<List<ShowMyPost>> response) {
                 if (response.isSuccessful()) {
-
                     try {
                         Log.d( "iuyiuy", "Log 4" );
 //                        long listLength = response.body().size();
@@ -236,19 +238,21 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
         } );
     }
 
-//    Fetch post using category
-    private void fetchFromCategory(String categoryValue) {
-        final Call<List<CategoryResult>> call = RestHandler.getApiService().getCategoryResult( categoryValue );
+    //    Fetch post using category
+    private void fetchFromCategory(final String categoryValue) {
+        final Call<List<CategoryRequest>> call = RestHandler.getApiService().getCategoryResult( categoryValue );
         progressDialog.setMessage( Messages.FETCHING_POST );
         progressDialog.show();
-        call.enqueue( new Callback<List<CategoryResult>>() {
+        Log.d("lkop","1");
+        call.enqueue( new Callback<List<CategoryRequest>>() {
             @Override
-            public void onResponse(@NotNull Call<List<CategoryResult>> call, @NotNull Response<List<CategoryResult>> response) {
+            public void onResponse(@NotNull Call<List<CategoryRequest>> call, @NotNull Response<List<CategoryRequest>> response) {
                 if (response.isSuccessful()) {
                     try {
-//                        long listLength = response.body().size();
                         categoryPostList = response.body();
-                        postAdapter = new PostAdapter( postList, R.layout.post_list, getApplicationContext() );
+                        Log.d("lkop","2");
+                        Log.d("lkop", String.valueOf( categoryPostList ) );
+                        categoryAdapter = new CategoryAdapter( categoryPostList, R.layout.post_list, getApplicationContext() );
                         recyclerView.setAdapter( postAdapter );
                         if (mSwipeRefreshLayout.isRefreshing()) {
                             mSwipeRefreshLayout.setRefreshing( false );
@@ -257,6 +261,7 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
 
                     } catch (Exception err) {
                         err.printStackTrace();
+                        Log.d("lkop","3");
                     }
                 } else {
                     if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
@@ -277,7 +282,9 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
             }
 
             @Override
-            public void onFailure(@NotNull Call<List<CategoryResult>> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<List<CategoryRequest>> call, @NotNull Throwable t) {
+                Log.d("lkop","4");
+
                 try {
                     progressDialog.dismiss();
                     messageHelper.shortMessage( Messages.PROBLEM_CONNECT_SERVER );
@@ -338,14 +345,13 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String categoryValue = categorySpinner.getSelectedItem().toString();
-        Log.d( "lkop","Selected category is " + categoryValue );
-        if(!categoryValue.isEmpty()){
-            fetchFromCategory( categoryValue );
-        }
+        String category = categorySpinner.getSelectedItem().toString();
+        Log.d("lkop",category);
+        if(!category.isEmpty())
+        fetchFromCategory( category );
     }
+
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
     }
-
 }
