@@ -43,7 +43,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull PostAdapter.ViewHolder viewHolder, final int position) {
         final PostResponse postResponse = postList.get( position );
         CardView cardView = viewHolder.cardView;
-
         viewHolder.textTitle.setText( postResponse.getTitle() );
         viewHolder.textDetail.setText( postResponse.getPost().substring( 0, 100 ) );
         title = postResponse.getTitle();
@@ -54,6 +53,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 Intent intent = new Intent( context, FullStoryActivity.class );
 //                intent.putExtra( "PostTitle", title );
 //                intent.putExtra( "PostDetail", detail );
+                intent.putExtra( "PostId",postResponse.getPostId() );
                 intent.putExtra( "PostTitle" ,postResponse.getTitle());
                 intent.putExtra( "PostDetail", postResponse.getPost());
                 v.getContext().startActivity( intent );

@@ -105,6 +105,8 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
             public void onClick(View view) {
                 Intent intent = new Intent( thisActivity, InputActivity.class );
                 startActivity( intent );
+//                Intent i = new Intent( android.provider.Settings.ACTION_LOCALE_SETTINGS );
+//                startActivity( i );
             }
         } );
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager( getApplicationContext() );
@@ -177,14 +179,11 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
         final Call<List<ShowMyPost>> call = RestHandler.getApiService().getMyPostDetail( autoId );
         progressDialog.setMessage( Messages.FETCHING_POST );
         progressDialog.show();
-        Log.d( "iuyiuy", "Log 3" );
         call.enqueue( new Callback<List<ShowMyPost>>() {
             @Override
             public void onResponse(@NotNull Call<List<ShowMyPost>> call, @NotNull Response<List<ShowMyPost>> response) {
                 if (response.isSuccessful()) {
                     try {
-                        Log.d( "iuyiuy", "Log 4" );
-//                        long listLength = response.body().size();
                         myPostList = response.body();
                         Log.d( "pqpq", myPostList + " erre" );
                         myPostAdapter = new MyPostAdapter( myPostList, R.layout.post_list, getApplicationContext() );
@@ -195,18 +194,12 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
                         progressDialog.dismiss();
 
                     } catch (Exception err) {
-                        Log.d( "iuyiuy", "Log 5" );
-
                         err.printStackTrace();
                     }
                 } else {
-                    Log.d( "iuyiuy", "Log 6" );
-
                     if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
                         progressDialog.dismiss();
                         messageHelper.shortMessage( Messages.WRONG_VALUE );
-                        Log.d( "iuyiuy", "Log 7" );
-
                     } else {
                         try {
                             messageHelper.shortMessage( Messages.PROBLEM_CONNECT_SERVER );
@@ -216,7 +209,6 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
                         } catch (Exception err) {
                             Log.e( "--> Exception", Arrays.toString( err.getStackTrace() ) );
                         }
-                        Log.d( "iuyiuy", "Log 8" );
                     }
                 }
             }
@@ -224,8 +216,6 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
             @Override
             public void onFailure(@NotNull Call<List<ShowMyPost>> call, @NotNull Throwable t) {
                 try {
-                    Log.d( "iuyiuy", "Log 9" );
-
                     progressDialog.dismiss();
                     messageHelper.shortMessage( Messages.PROBLEM_CONNECT_SERVER );
                     if (t instanceof Exception) {
@@ -243,17 +233,16 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
         final Call<List<CategoryRequest>> call = RestHandler.getApiService().getCategoryResult( categoryValue );
         progressDialog.setMessage( Messages.FETCHING_POST );
         progressDialog.show();
-        Log.d("lkop","1");
+        Log.d( "lkop", "1" );
         call.enqueue( new Callback<List<CategoryRequest>>() {
             @Override
             public void onResponse(@NotNull Call<List<CategoryRequest>> call, @NotNull Response<List<CategoryRequest>> response) {
                 if (response.isSuccessful()) {
                     try {
                         categoryPostList = response.body();
-                        Log.d("lkop","2");
-                        Log.d("lkop", String.valueOf( categoryPostList ) );
+                        Log.d( "lkop", String.valueOf( categoryPostList ) );
                         categoryAdapter = new CategoryAdapter( categoryPostList, R.layout.post_list, getApplicationContext() );
-                        recyclerView.setAdapter( postAdapter );
+                        recyclerView.setAdapter( categoryAdapter );
                         if (mSwipeRefreshLayout.isRefreshing()) {
                             mSwipeRefreshLayout.setRefreshing( false );
                         }
@@ -261,7 +250,7 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
 
                     } catch (Exception err) {
                         err.printStackTrace();
-                        Log.d("lkop","3");
+                        Log.d( "lkop", "3" );
                     }
                 } else {
                     if (response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
@@ -283,7 +272,7 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
 
             @Override
             public void onFailure(@NotNull Call<List<CategoryRequest>> call, @NotNull Throwable t) {
-                Log.d("lkop","4");
+                Log.d( "lkop", "4" );
 
                 try {
                     progressDialog.dismiss();
@@ -314,13 +303,11 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
                 }
                 categorySpinner.setAdapter( aa );
             }
-
             @Override
             public void onFailure(@NotNull Call<List<Category>> call, @NotNull Throwable t) {
                 messageHelper.longMessage( Messages.UNABLE_FETCH_CATEGORY );
             }
         } );
-
     }
 
     @Override
@@ -346,9 +333,10 @@ public class MainActivity extends ZrowActivity implements AdapterView.OnItemSele
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String category = categorySpinner.getSelectedItem().toString();
-        Log.d("lkop",category);
-        if(!category.isEmpty())
-        fetchFromCategory( category );
+        if (!category.isEmpty())
+        {
+            fetchFromCategory( category );
+        }
     }
 
     @Override

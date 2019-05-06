@@ -43,11 +43,11 @@
         android:layout_width="200sp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/filter_post"
-        android:background="#FCDD83"
+        android:background="@drawable/border"
         android:padding="5dp"
         android:layout_margin="10dp"
-
-        android:popupBackground="#EBBC30"
+        android:popupBackground="#F3E2AE"
+        style="@style/spinner_style"
         />
 
     <android.support.v4.widget.SwipeRefreshLayout

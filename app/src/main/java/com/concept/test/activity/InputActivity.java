@@ -51,7 +51,6 @@ public class InputActivity extends ZrowActivity {
     String autoId;
     DatabaseHelper dbHelper;
 
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

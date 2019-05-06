@@ -2,12 +2,14 @@ package com.concept.test.rest.request;
 
 import com.concept.test.model.BaseDomain;
 
+import org.jetbrains.annotations.NotNull;
+
 public class CategoryRequest extends BaseDomain {
 
-    String category;
-    String title;
-    String post;
-    String autoId;
+    private String category;
+    private String title;
+    private String post;
+    private String autoId;
 
     public String getTitle() {
         return title;
@@ -42,6 +44,7 @@ public class CategoryRequest extends BaseDomain {
         this.category = category;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "CategoryRequest{" +

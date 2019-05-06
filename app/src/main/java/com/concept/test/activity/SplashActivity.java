@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.concept.test.R;
@@ -20,9 +21,7 @@ public class SplashActivity extends AwesomeSplash {
     ConnectionDetector connectionDetector = new ConnectionDetector( this );
     @Override
     public void initSplash(ConfigSplash configSplash) {
-
         /* you don't have to override every property */
-
         //Customize Circular Reveal
         configSplash.setBackgroundColor(R.color.colorPrimary); //any color you want form colors.xml
         configSplash.setAnimCircularRevealDuration(2000); //int ms
@@ -33,7 +32,6 @@ public class SplashActivity extends AwesomeSplash {
         configSplash.setLogoSplash(R.mipmap.ic_launcher); //or any other drawable
         configSplash.setAnimLogoSplashDuration(2000); //int ms
         configSplash.setAnimLogoSplashTechnique( Techniques.Bounce); //choose one form Techniques (ref: https://github.com/daimajia/AndroidViewAnimations)
-
 
         //Customize Path
 //        configSplash.setPathSplash( SyncStateContract.Constants.); //set path String
@@ -61,21 +59,29 @@ public class SplashActivity extends AwesomeSplash {
         //transit to another activity here
         //or do whatever you want
         Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                .getBoolean("isFirstRun", true);
+                .getBoolean("isFirstRzun", true);
 
-        if (isFirstRun) {
+        Log.d("oikj", String.valueOf( isFirstRun ) );
+        Log.d("oikj","1");
+
+        if (!isFirstRun) {
             //show start activity
-
             startActivity(new Intent(SplashActivity.this, IntroActivity.class));
-
+            finish();
             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                     .putBoolean("isFirstRun", false).apply();
+            Log.d("oikj","2");
+
         }else {
             if (connectionDetector.isConnectedToInternet()) {
+                Log.d("oikj","3");
+
                 Intent i = new Intent( SplashActivity.this, RegisterActivity.class );
                 startActivity( i );
                 finish();
             } else {
+                Log.d("oikj","4");
+
                 Intent i = new Intent( SplashActivity.this, InputActivity.class );
                 startActivity( i );
                 finish();
